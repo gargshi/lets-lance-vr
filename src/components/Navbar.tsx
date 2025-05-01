@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import DarkModeButton from './DarkModeButton';
 
 interface NavbarProps {
   title?: string;
@@ -54,19 +55,10 @@ const Navbar: React.FC<NavbarProps> = ({ title = 'My App', className = '', links
         {/* Search and Login (desktop only) */}
         <div className="hidden md:flex items-center space-x-4">
           	<input type="text" placeholder="Search..." className={className + " border border-gray-300 rounded px-2 py-1"} />
-			<button className="bg-blue-500 text-white px-4 py-2 rounded">
+			<button className="border border-gray-300 bg-transparent text-gray-600 px-4 py-2 rounded transparent-btn">
 				Login
 			</button>
-			<button className="w-full bg-blue-500 text-white px-1 py-2 rounded" 
-				onClick={ () => {						
-									document.querySelectorAll('.darkm')!.forEach((el) => {
-										el.classList.toggle("dark:bg-gray-900")
-										el.classList.toggle("dark:text-white")
-									})
-								}
-						} >
-				Dark Mode
-			</button>		
+			<DarkModeButton />		
         </div>
 		
       </div>
@@ -83,19 +75,10 @@ const Navbar: React.FC<NavbarProps> = ({ title = 'My App', className = '', links
             <input type="text" placeholder="Search..." className={ className + " w-full p-2 rounded"}/>
           </li>
           <li>
-            <button className="w-full bg-blue-500 text-white px-4 py-2 rounded">Login</button>
+            <button className="w-full border border-gray-300 bg-transparent text-gray-600 px-4 py-2 rounded transparent-btn">Login</button>
           </li>
 		  <li>
-			<button className="w-full bg-blue-500 text-white px-1 py-2 rounded" 
-				onClick={ () => {						
-									document.querySelectorAll('.darkm')!.forEach((el) => {
-										el.classList.toggle("dark:bg-gray-900")
-										el.classList.toggle("dark:text-white")
-									})
-								}
-						} >
-				Dark Mode
-			</button>
+		  	<DarkModeButton />
 		  </li>		 
         </ul>
       </div>
