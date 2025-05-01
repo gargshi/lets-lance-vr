@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import DarkModeButton from './DarkModeButton';
+import { Link } from 'react-router-dom';
 
 interface NavbarProps {
   title?: string;
@@ -47,7 +48,7 @@ const Navbar: React.FC<NavbarProps> = ({ title = 'My App', className = '', links
         <ul className="hidden md:flex space-x-4">
           {links.map((link, index) => (
             <li key={index}>
-              <a href={link.href}>{link.text}</a>
+              <Link to={link.href}>{link.text}</Link>
             </li>
           ))}
         </ul>
@@ -56,7 +57,14 @@ const Navbar: React.FC<NavbarProps> = ({ title = 'My App', className = '', links
         <div className="hidden md:flex items-center space-x-4">
           	<input type="text" placeholder="Search..." className={className + " border border-gray-300 rounded px-2 py-1"} />
 			<button className="border border-gray-300 bg-transparent text-gray-600 px-4 py-2 rounded transparent-btn">
-				Login
+				<Link to="/login" className="w-full block text-center">
+					Login
+				</Link>
+			</button>
+			<button className="border border-gray-300 bg-transparent text-gray-600 px-4 py-2 rounded transparent-btn">
+				<Link to="/register" className="w-full block text-center">
+					Register
+				</Link>
 			</button>
 			<DarkModeButton />		
         </div>
@@ -68,14 +76,18 @@ const Navbar: React.FC<NavbarProps> = ({ title = 'My App', className = '', links
         <ul className={className + " flex flex-col space-y-2 p-4"}>
           {links.map((link, index) => (
             <li key={index}>
-              <a href={link.href}>{link.text}</a>
+              <Link to={link.href}>{link.text}</Link>
             </li>
           ))}
           <li>
             <input type="text" placeholder="Search..." className={ className + " w-full p-2 rounded"}/>
           </li>
           <li>
-            <button className="w-full border border-gray-300 bg-transparent text-gray-600 px-4 py-2 rounded transparent-btn">Login</button>
+            <button className="w-full border border-gray-300 bg-transparent text-gray-600 px-4 py-2 rounded transparent-btn">
+				<Link to="/login" className="w-full block text-center">
+					Login
+				</Link>
+			</button>
           </li>
 		  <li>
 		  	<DarkModeButton />
