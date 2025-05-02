@@ -86,14 +86,31 @@ const Navbar: React.FC<NavbarProps> = ({ title = 'My App', className = '', links
         {/* Search and Login (desktop only) */}
         <div className="hidden md:flex items-center space-x-4">
           	<input type="text" placeholder="Search..." className={className + " border border-gray-300 rounded px-2 py-1"} />
+            {
+              localStorage.getItem('access_token') ? (
+                <>
+                  <Link to="/dashboard" className=" border border-gray-300 bg-transparent text-gray-600 px-4 py-2 rounded transparent-btn block text-center">
+                    Dashboard
+                  </Link>
+                  
+                  <Link to="/logout" className=" border border-gray-300 bg-transparent text-gray-600 px-4 py-2 rounded transparent-btn block text-center">
+                    Logout
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <Link to="/login" className=" border border-gray-300 bg-transparent text-gray-600 px-4 py-2 rounded transparent-btn block text-center">
+                    Login
+                  </Link>			
+                
+                  <Link to='/register' className=" border border-gray-300 bg-transparent text-gray-600 px-4 py-2 rounded transparent-btn block text-center">
+                    Register
+                  </Link>	
+                </>
+              )
+            }
 			
-            <Link to="/login" className=" border border-gray-300 bg-transparent text-gray-600 px-4 py-2 rounded transparent-btn block text-center">
-              Login
-            </Link>			
-          
-            <Link to='/register' className=" border border-gray-300 bg-transparent text-gray-600 px-4 py-2 rounded transparent-btn block text-center">
-              Register
-            </Link>			
+            		
             <DarkModeButton />		
         </div>
 		
@@ -110,18 +127,37 @@ const Navbar: React.FC<NavbarProps> = ({ title = 'My App', className = '', links
           <li>
             <input type="text" placeholder="Search..." className={ className + " w-full p-2 rounded"}/>
           </li>
-          <li>
-            
-              <Link to="/login" className="border border-gray-300 bg-transparent text-gray-600 px-4 py-2 rounded transparent-btn block text-center">
-                Login
-              </Link>
-            
-          </li>
-          <li>            
-              <Link to="/register" className="border border-gray-300 bg-transparent text-gray-600 px-4 py-2 rounded transparent-btn block text-center">
-                Register
-              </Link>            
-          </li>
+          {
+            localStorage.getItem('access_token') ? (
+              <>
+                <li>
+                  <Link to="/dashboard" className="border border-gray-300 bg-transparent text-gray-600 px-4 py-2 rounded transparent-btn block text-center">
+                    Dashboard
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/logout" className="border border-gray-300 bg-transparent text-gray-600 px-4 py-2 rounded transparent-btn block text-center">
+                    Logout
+                  </Link>                  
+                </li>
+              </>
+            ) : (
+              <>
+                <li>            
+                    <Link to="/login" className="border border-gray-300 bg-transparent text-gray-600 px-4 py-2 rounded transparent-btn block text-center">
+                      Login
+                    </Link>
+                  
+                </li>
+                <li>            
+                    <Link to="/register" className="border border-gray-300 bg-transparent text-gray-600 px-4 py-2 rounded transparent-btn block text-center">
+                      Register
+                    </Link>            
+                </li>
+              </>
+            )
+          }
+          
           <li>
             <DarkModeButton />
           </li>		 

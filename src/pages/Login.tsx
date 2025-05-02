@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import API_BASE from '../components/config';
 
 interface LoginProps {
   className?: string;
@@ -38,7 +39,29 @@ const Login: React.FC<LoginProps>= ({ className = '' }) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log('Logging in:', email, password);
-    // Add API call here
+    fetch(`${API_BASE}/json_login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, password }),
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log('Login successful:', data);
+      if (data.token) {
+        localStorage.setItem('access_token', data.token);
+        location.href = '/dashboard'; // Redirect to dashboard or another page 
+
+      } else {
+        alert(data.message || 'Login failed.');
+      }
+      // Handle successful login (e.g., redirect or show a success message)
+    })
+    .catch((error) => {
+      console.error('Error logging in:', error);
+      // Handle error (e.g., show an error message)
+    });
   };
 
   return (

@@ -4,6 +4,8 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Contact from './pages/Contact';
 import About from './pages/About';
+import Dashboard from './pages/Dashboard';
+import Logout from './pages/Logout';
 function App() {
   return (
     <div className="bg-white min-h-screen text-gray-900 darkm">      
@@ -23,6 +25,8 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/login" element={<Login className="darkm" />} />
           <Route path="/register" element={<Register className="darkm" />} />
+          <Route path="/dashboard" element={<Dashboard className="darkm" />} />
+          <Route path="/logout" element={<Logout />} />
         </Routes>
       </div>
     </div>
