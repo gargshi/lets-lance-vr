@@ -18,7 +18,7 @@ function App() {
           { text: 'About Us', href: '/about' },
         ]}
       />
-      <div className="container mx-auto mt-4">
+      <>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/contact" element={<Contact />} />
@@ -28,7 +28,7 @@ function App() {
           <Route path="/dashboard" element={<Dashboard className="darkm" />} />
           <Route path="/logout" element={<Logout />} />
         </Routes>
-      </div>
+      </>
     </div>
   );
 }

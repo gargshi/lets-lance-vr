@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import DarkModeButton from './DarkModeButton';
 import { Link } from 'react-router-dom';
+import { dark_mode_init } from '../utils_tsx/darkmode'; // Import the dark mode initialization function
 
 interface NavbarProps {
   title?: string;
@@ -8,28 +9,7 @@ interface NavbarProps {
   links?: { text: string; href: string }[];
 }
 
-function dark_mode_init() {
-  const darkMode = localStorage.getItem('dark-mode') === 'true';
-  if (darkMode) {
-    document.querySelectorAll('.darkm').forEach((el) => {
-      el.classList.add("dark:bg-gray-900")
-      el.classList.add("dark:text-white")
-    })
-    document.querySelectorAll('.transparent-btn').forEach((el) => {
-      el.classList.add("dark:bg-transparent")
-      el.classList.add("dark:text-white")
-    })
-  } else {
-    document.querySelectorAll('.darkm').forEach((el) => {
-      el.classList.remove("dark:bg-gray-900")
-      el.classList.remove("dark:text-white")
-    })
-    document.querySelectorAll('.transparent-btn').forEach((el) => {
-      el.classList.remove("dark:bg-transparent")
-      el.classList.remove("dark:text-white")
-    })
-  }  
-}
+
 
 const Navbar: React.FC<NavbarProps> = ({ title = 'My App', className = '', links = [] }) => {
 
