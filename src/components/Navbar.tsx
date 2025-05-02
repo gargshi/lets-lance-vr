@@ -7,14 +7,44 @@ interface NavbarProps {
   className?: string;
   links?: { text: string; href: string }[];
 }
+
+function dark_mode_init() {
+  const darkMode = localStorage.getItem('dark-mode') === 'true';
+  if (darkMode) {
+    document.querySelectorAll('.darkm').forEach((el) => {
+      el.classList.add("dark:bg-gray-900")
+      el.classList.add("dark:text-white")
+    })
+    document.querySelectorAll('.transparent-btn').forEach((el) => {
+      el.classList.add("dark:bg-transparent")
+      el.classList.add("dark:text-white")
+    })
+  } else {
+    document.querySelectorAll('.darkm').forEach((el) => {
+      el.classList.remove("dark:bg-gray-900")
+      el.classList.remove("dark:text-white")
+    })
+    document.querySelectorAll('.transparent-btn').forEach((el) => {
+      el.classList.remove("dark:bg-transparent")
+      el.classList.remove("dark:text-white")
+    })
+  }  
+}
+
 const Navbar: React.FC<NavbarProps> = ({ title = 'My App', className = '', links = [] }) => {
 
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
+  // Initialize dark mode on component mount
+  React.useEffect(() => {
+    dark_mode_init();
+  }
+  , []);
+
   return (
-    <nav className={className}>	
+    <nav className={className + " border"}>	
       <div className="container mx-auto flex justify-between items-center p-4">
         <div className="logo text-2xl font-bold">
           <a href="/">{title}</a>
@@ -56,17 +86,15 @@ const Navbar: React.FC<NavbarProps> = ({ title = 'My App', className = '', links
         {/* Search and Login (desktop only) */}
         <div className="hidden md:flex items-center space-x-4">
           	<input type="text" placeholder="Search..." className={className + " border border-gray-300 rounded px-2 py-1"} />
-			<button className="border border-gray-300 bg-transparent text-gray-600 px-4 py-2 rounded transparent-btn">
-				<Link to="/login" className="w-full block text-center">
-					Login
-				</Link>
-			</button>
-			<button className="border border-gray-300 bg-transparent text-gray-600 px-4 py-2 rounded transparent-btn">
-				<Link to="/register" className="w-full block text-center">
-					Register
-				</Link>
-			</button>
-			<DarkModeButton />		
+			
+            <Link to="/login" className=" border border-gray-300 bg-transparent text-gray-600 px-4 py-2 rounded transparent-btn block text-center">
+              Login
+            </Link>			
+          
+            <Link to='/register' className=" border border-gray-300 bg-transparent text-gray-600 px-4 py-2 rounded transparent-btn block text-center">
+              Register
+            </Link>			
+            <DarkModeButton />		
         </div>
 		
       </div>
@@ -83,15 +111,20 @@ const Navbar: React.FC<NavbarProps> = ({ title = 'My App', className = '', links
             <input type="text" placeholder="Search..." className={ className + " w-full p-2 rounded"}/>
           </li>
           <li>
-            <button className="w-full border border-gray-300 bg-transparent text-gray-600 px-4 py-2 rounded transparent-btn">
-				<Link to="/login" className="w-full block text-center">
-					Login
-				</Link>
-			</button>
+            
+              <Link to="/login" className="border border-gray-300 bg-transparent text-gray-600 px-4 py-2 rounded transparent-btn block text-center">
+                Login
+              </Link>
+            
           </li>
-		  <li>
-		  	<DarkModeButton />
-		  </li>		 
+          <li>            
+              <Link to="/register" className="border border-gray-300 bg-transparent text-gray-600 px-4 py-2 rounded transparent-btn block text-center">
+                Register
+              </Link>            
+          </li>
+          <li>
+            <DarkModeButton />
+          </li>		 
         </ul>
       </div>
     </nav>

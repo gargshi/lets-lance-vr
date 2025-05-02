@@ -11,6 +11,10 @@ const DarkModeButton = () => {
 									el.classList.toggle("dark:bg-transparent")
 									el.classList.toggle("dark:text-white")
 								})
+								document.querySelectorAll('.border').forEach((el) => {
+									el.classList.toggle("dark:border-gray-500")
+								})
+								localStorage.setItem('dark-mode', localStorage.getItem('dark-mode') === 'true' ? 'false' : 'true')
 							}
 					} >
 			Dark Mode
