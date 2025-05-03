@@ -78,42 +78,31 @@ const Dashboard: React.FC<DashboardProps> = ( { className = '' }) => {
 			// alert("You are not logged in.");
 			window.location.href = "/login"; // Redirect to login page
 			return;
-		}		
+		}
 
 		const userData = JSON.parse(localStorage.getItem("user") || "{}");
-
-
 		const res = await fetch(`${API_BASE}/messages/system/${userData.id}`, {
 			method: "GET",
 		});
 		const data = await res.json();
-		if (res.ok) {
-			console.log(data.length);
-			setSysMessages(data);
-			console.log(sys_messages);
+		if (res.ok) {			
+			setSysMessages(data);			
 		} else {
 			alert(data.message || "Data fetch failed.");
 		}
 	};
-	React.useEffect(() => {
-		fetchMessages();
-	  }, []);
-
+	
 	// Initialize dark mode on component mount
 	React.useEffect(() => {
+		fetchMessages();
 		dark_mode_init();
 	}, []);
-
-	
-
-	
 
 	const userData = JSON.parse(localStorage.getItem("user") || "{}");
 	if (!userData) {
 		console.log("User data not found.");
 		return;
 	}
-
 
 	return (
 		<>		
