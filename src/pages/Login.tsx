@@ -51,7 +51,7 @@ const Login: React.FC<LoginProps>= ({ className = '' }) => {
       console.log('Login successful:', data);
       if (data.token) {
         localStorage.setItem('access_token', data.token);
-        location.href = '/dashboard'; // Redirect to dashboard or another page 
+        window.location.href = '/dashboard'; // Redirect to dashboard or another page 
 
       } else {
         alert(data.message || 'Login failed.');

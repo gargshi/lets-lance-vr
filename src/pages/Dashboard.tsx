@@ -9,6 +9,7 @@ interface DashboardProps {
 
 interface NotificationSectionProps {
   className?: string;
+  sys_messages?: SystemMessage[];
 }
 
 interface DetailsAtGlanceProps{
@@ -24,22 +25,31 @@ interface DetailsAtGlanceProps{
 
 interface ActionsSectionProps {
   className?: string;
-//   userData?: {
-// 	name: string;
-// 	email: string;
-// 	phone: string;
-// 	address: string;
-// 	};
 }
 
+interface SystemMessage {
+  content: string;
+  id: number;
+  received_at: string;
+  receiver: string;
+  sender: string;
+  sent_at: string;
+  severity: string;
+}
+// const userData = {};
+
+
 const Dashboard: React.FC<DashboardProps> = ( { className = '' }) => {
+
+	const [sys_messages, setSysMessages] = React.useState<SystemMessage[]>([]);
 	async function fetchUserData() {
 		const access_token = localStorage.getItem("access_token");
 		if (!access_token) {
-			// alert("You are not logged in.");
+			alert("You are not logged in.");
 			window.location.href = "/login"; // Redirect to login page
 			return;
 		}
+		//alert("Fetching user data...");
 		if (!localStorage.getItem("user")) {
 			console.log("User data not found. Fetching from API...");
 			const res = await fetch(`${API_BASE}/dashboard`, {
@@ -51,15 +61,43 @@ const Dashboard: React.FC<DashboardProps> = ( { className = '' }) => {
 				console.log(data.message);
 				let user=data.user
 				console.log(user)
+
 				localStorage.setItem("user", JSON.stringify(user));
 				window.location.href = "/dashboard"; // Redirect to dashboard page
 				// localStorage.setItem("access_token", access_token);
 			} else {
 				alert(data.message || "Data fetch failed.");
 			}
-		}	
+		}		
 	}
 	fetchUserData();
+
+	const fetchMessages = async () => {
+		const access_token = localStorage.getItem("access_token");
+		if (!access_token) {
+			// alert("You are not logged in.");
+			window.location.href = "/login"; // Redirect to login page
+			return;
+		}		
+
+		const userData = JSON.parse(localStorage.getItem("user") || "{}");
+
+
+		const res = await fetch(`${API_BASE}/messages/system/${userData.id}`, {
+			method: "GET",
+		});
+		const data = await res.json();
+		if (res.ok) {
+			console.log(data.length);
+			setSysMessages(data);
+			console.log(sys_messages);
+		} else {
+			alert(data.message || "Data fetch failed.");
+		}
+	};
+	React.useEffect(() => {
+		fetchMessages();
+	  }, []);
 
 	// Initialize dark mode on component mount
 	React.useEffect(() => {
@@ -81,7 +119,7 @@ const Dashboard: React.FC<DashboardProps> = ( { className = '' }) => {
 		<>		
 			<main className={ className+" flex flex-col items-center justify-center h-screen bg-gray-100"}>
 				<div className={ className + " grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full p-4"}>
-					<NotificationSection className={className + " col-span-3 lg:col-span-2"}/>			
+					<NotificationSection className={className + " col-span-3 lg:col-span-2"} sys_messages={sys_messages}/>			
 					
 					<DetailsAtGlanceSection className={className + " col-span-3 lg:col-span-1"} userData={userData}/>
 					
@@ -92,7 +130,7 @@ const Dashboard: React.FC<DashboardProps> = ( { className = '' }) => {
 	)
 }
 
-const NotificationSection: React.FC<NotificationSectionProps> = ({className=''}) => {
+const NotificationSection: React.FC<NotificationSectionProps> = ({className='', sys_messages=[]}) => {
 	function switchTabs(tab_seq: string) {
 		const systemTab = document.getElementById('systemTab');
 		const userTab = document.getElementById('userTab');
@@ -149,7 +187,11 @@ const NotificationSection: React.FC<NotificationSectionProps> = ({className=''})
 			
 			<div id="systemMessages"  className="space-y-2 text-sm">
 				<ul className="list-disc list-inside">
-					<li> Refreshing.2..</li>
+					{						
+						sys_messages.map((sysMessage) => (	
+							<li key={sysMessage.id}>{sysMessage.content}</li>
+						))
+					}					
 				</ul>
 			</div>
 
