@@ -24,9 +24,9 @@ const Navbar: React.FC<NavbarProps> = ({ title = 'My App', className = '', links
   , []);
 
   return (
-    <nav className={className + " border"}>	
-      <div className="container mx-auto flex justify-between items-center p-4">
-        <div className="logo text-2xl font-bold">
+    <nav className={className + " border-b  border-gray-500"}>	
+      <div className=" container mx-auto flex justify-between items-center p-4">
+        <div className=" logo text-2xl font-bold">
           <a href="/">{title}</a>
         </div>
 

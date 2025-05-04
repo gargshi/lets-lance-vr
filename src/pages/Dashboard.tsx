@@ -105,7 +105,7 @@ const NotificationSection: React.FC<{ className: string; sysMessages: SystemMess
   };
 
   return (
-    <section className={`${className} bg-white rounded-xl shadow p-6 col-span-3 lg:col-span-2 border`}>
+    <section className={`${className} bg-white rounded-xl shadow p-6 col-span-3 lg:col-span-2 border border-gray-500`}>
       <div className="flex items-center gap-4 mb-5">
         <div className="flex items-center gap-2">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
@@ -149,7 +149,7 @@ const DetailsAtGlanceSection: React.FC<DetailsAtGlanceProps> = ({ className, use
   };
 
   return (
-    <section className={`${className} bg-white border rounded-xl shadow p-6 col-span-3 lg:col-span-1`}>
+    <section className={`${className} bg-white border border-gray-500 rounded-xl shadow p-6 col-span-3 lg:col-span-1`}>
       <h2 className="text-lg font-semibold mb-4">Your details at a glance</h2>
       <hr />
       <div className="space-y-4">
@@ -159,7 +159,11 @@ const DetailsAtGlanceSection: React.FC<DetailsAtGlanceProps> = ({ className, use
               <path strokeLinecap="round" strokeLinejoin="round" d="M21 12a2.25 2.25 0 0 0-2.25-2.25H15a3 3 0 1 1-6 0H5.25A2.25 2.25 0 0 0 3 12m18 0v6a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 18v-6m18 0V9M3 12V9m18 0a2.25 2.25 0 0 0-2.25-2.25H5.25A2.25 2.25 0 0 0 3 9m18 0V6a2.25 2.25 0 0 0-2.25-2.25H5.25A2.25 2.25 0 0 0 3 6v3" />
             </svg>
             Wallet
-            <span>+</span>
+            <span>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="size-6">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+              </svg>
+            </span>
           </button>
           <div id="walletSection" className={`${className} border overflow-hidden max-h-0 transition-all duration-500 ease-in-out px-4 bg-gray-50`}>
 			<p className="text-2xl font-bold mt-2">$245.50</p>
@@ -175,30 +179,34 @@ const DetailsAtGlanceSection: React.FC<DetailsAtGlanceProps> = ({ className, use
 			</svg>
 
 			Account Info
-            <span>+</span>
+            <span>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="size-6">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+              </svg>
+            </span>
           </button>
           <div id="accountSection" className={`${className} border overflow-hidden max-h-0 transition-all duration-500 ease-in-out px-4 bg-gray-50`}>
-			<table className={`${className} w-full text-sm text-left text-gray-500`}>
-				<tbody>
-					<tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-						<th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-							Username
-						</th>
-						<td className="px-6 py-4">
-							{userData?.name}
-						</td>
-					</tr>
-					<tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-						<th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-							Email
-						</th>
-						<td className="px-6 py-4">
-							{userData?.email}
-						</td>
-					</tr>
-				</tbody>
-			</table>            
-			<div className="mt-4"></div>
+            <table className={`${className} w-full text-sm text-left text-gray-500`}>
+              <tbody>
+                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                  <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    Username
+                  </th>
+                  <td className="px-6 py-4">
+                    {userData?.name}
+                  </td>
+                </tr>
+                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                  <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    Email
+                  </th>
+                  <td className="px-6 py-4">
+                    {userData?.email}
+                  </td>
+                </tr>
+              </tbody>
+            </table>            
+            <div className="mt-4"></div>
           </div>
         </div>
       </div>
@@ -207,7 +215,7 @@ const DetailsAtGlanceSection: React.FC<DetailsAtGlanceProps> = ({ className, use
 };
 
 const ActionsSection: React.FC<{ className: string }> = ({ className }) => (
-  <section className={`${className} bg-white rounded-xl shadow p-6`}>
+  <section className={`${className} bg-white rounded-xl border border-gray-500 shadow p-6`}>
     <h2 className="text-lg font-semibold mb-4">Actions</h2>
     <div className="flex flex-col space-y-3">
       <button className="bg-blue-500 text-white p-3 rounded-xl">Upload Project</button>
