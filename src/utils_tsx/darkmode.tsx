@@ -12,7 +12,7 @@ export function dark_mode_init() {
   } else {
 	document.querySelectorAll('.darkm').forEach((el) => {
 	  el.classList.remove("dark:bg-gray-900")
-	  el.classList.remove("dark:text-white")
+	  el.classList.remove("dark:text-white")	  
 	})
 	document.querySelectorAll('.transparent-btn').forEach((el) => {
 	  el.classList.remove("dark:bg-transparent")

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import API_BASE from "../components/config";
 import { dark_mode_init } from '../utils_tsx/darkmode';
+import ProjectSection from "../components/ProjectSection";
+import Modal from "../components/Modal";
 
 interface DashboardProps {
   className?: string;
@@ -78,7 +80,8 @@ const Dashboard: React.FC<DashboardProps> = ({ className = '' }) => {
 		<div className={`${className} grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full p-4 bg-gray-100`}>
 			<NotificationSection className={`${className} col-span-3 lg:col-span-2`} sysMessages={sysMessages} />
 			<DetailsAtGlanceSection className={`${className} col-span-3 lg:col-span-1`} userData={userData} />
-			<ActionsSection className={`${className} col-span-3 lg:col-span-1`} />
+			<ProjectSection className={`${className} col-span-3 lg:col-span-2`} />
+      <ActionsSection className={`${className} col-span-3 lg:col-span-1`} />      
 		</div>
 	</main>
   );
@@ -160,7 +163,7 @@ const DetailsAtGlanceSection: React.FC<DetailsAtGlanceProps> = ({ className, use
             </svg>
             Wallet
             <span>
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="size-6">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
               </svg>
             </span>
@@ -180,7 +183,7 @@ const DetailsAtGlanceSection: React.FC<DetailsAtGlanceProps> = ({ className, use
 
 			Account Info
             <span>
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="size-6">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
               </svg>
             </span>
@@ -214,14 +217,41 @@ const DetailsAtGlanceSection: React.FC<DetailsAtGlanceProps> = ({ className, use
   );
 };
 
-const ActionsSection: React.FC<{ className: string }> = ({ className }) => (
-  <section className={`${className} bg-white rounded-xl border border-gray-500 shadow p-6`}>
-    <h2 className="text-lg font-semibold mb-4">Actions</h2>
-    <div className="flex flex-col space-y-3">
-      <button className="bg-blue-500 text-white p-3 rounded-xl">Upload Project</button>
-      <button className="bg-green-500 text-white p-3 rounded-xl">View Assignments</button>
-    </div>
-  </section>
-);
+const ActionsSection: React.FC<{ className: string }> = ({ className }) => {
+  
+  const [isModalOpen, setModalOpen] = useState(false);
+  const addProject = () => {
+    // Logic to add a project
+   
+    console.log("Project added!");
+
+  };  
+
+  return (  
+    <section className={`${className} bg-white rounded-xl border border-gray-500 shadow p-6`}>
+        <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)} title="Add Project">
+            <form onSubmit={addProject}>
+              <div className="mb-4">
+                <label className="block text-gray-700 font-bold mb-2">Title</label>
+                <input title="title" type="text" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700 font-bold mb-2">Description</label>
+                <textarea title="description" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
+              </div>
+              <div className="mb-4">
+                <button type="submit" className="bg-blue-500 text-white p-3 rounded-xl">Add Project</button>
+              </div>
+            </form> 
+      </Modal>
+            
+      <h2 className="text-lg font-semibold mb-4">Actions</h2>
+      <div className="flex flex-col space-y-3">
+        <button className="bg-blue-500 text-white p-3 rounded-xl" onClick={() => setModalOpen(true)}>Upload Project</button>
+        <button className="bg-green-500 text-white p-3 rounded-xl">View Assignments</button>
+      </div>
+    </section>
+  );
+}
 
 export default Dashboard;
