@@ -9,23 +9,23 @@ interface DashboardProps {
   className?: string;
 }
 
-interface SystemMessage {
-  id: number;
-  content: string;
-  created_at: string;
-  updated_at: string;
-  user_id: number;
-  type: string;
-  status: string;
-  severity: string;
-}
+// interface SystemMessage {
+//   id: number;
+//   content: string;
+//   created_at: string;
+//   updated_at: string;
+//   user_id: number;
+//   type: string;
+//   status: string;
+//   severity: string;
+// }
 interface DetailsAtGlanceProps {
   className?: string;
   userData: any;
 }
 
 const Dashboard: React.FC<DashboardProps> = ({ className = '' }) => {
-  const [sysMessages, setSysMessages] = useState<SystemMessage[]>([]);
+  // const [sysMessages, setSysMessages] = useState<SystemMessage[]>([]);
 
   const fetchData = async (url: string, method: string = "GET", body: any = null) => {
     const access_token = localStorage.getItem("access_token");
@@ -58,17 +58,17 @@ const Dashboard: React.FC<DashboardProps> = ({ className = '' }) => {
     }
   };
 
-  const fetchMessages = async () => {
-    const userData = JSON.parse(localStorage.getItem("user") || "{}");
-    if (userData?.id) {
-      const data = await fetchData(`${API_BASE}/messages/system/${userData.id}`);
-      setSysMessages(data);
-    }
-  };
+  // const fetchMessages = async () => {
+  //   const userData = JSON.parse(localStorage.getItem("user") || "{}");
+  //   if (userData?.id) {
+  //     const data = await fetchData(`${API_BASE}/messages/system/${userData.id}`);
+  //     setSysMessages(data);
+  //   }
+  // };
 
   useEffect(() => {
     fetchUserData();
-    fetchMessages();
+    // fetchMessages();
     dark_mode_init();
   }, []);
 
@@ -79,7 +79,7 @@ const Dashboard: React.FC<DashboardProps> = ({ className = '' }) => {
   return (
 	<main>
 		<div className={`${className} grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full p-4 bg-gray-100`}>
-			<NotificationSection className={`${className} col-span-3 lg:col-span-2`} sysMessages={sysMessages} />
+			<NotificationSection className={`${className} col-span-3 lg:col-span-2`} />
 			<DetailsAtGlanceSection className={`${className} col-span-3 lg:col-span-1`} userData={userData} />
 			<ProjectSection className={`${className} col-span-3 lg:col-span-2`} />
       <ActionsSection className={`${className} col-span-3 lg:col-span-1`} />      
@@ -88,7 +88,7 @@ const Dashboard: React.FC<DashboardProps> = ({ className = '' }) => {
   );
 };
 
-const NotificationSection: React.FC<{ className: string; sysMessages: SystemMessage[] }> = ({ className, sysMessages }) => {
+const NotificationSection: React.FC<{ className: string }> = ({ className }) => {
   const switchTabs = (tabSeq: string) => {
     const systemTab = document.getElementById('systemTab');
     const userTab = document.getElementById('userTab');
