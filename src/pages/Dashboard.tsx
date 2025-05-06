@@ -3,6 +3,7 @@ import API_BASE from "../components/config";
 import { dark_mode_init } from '../utils_tsx/darkmode';
 import ProjectSection from "../components/ProjectSection";
 import Modal from "../components/Modal";
+import MessageList from "../components/MessagesPaginated";
 
 interface DashboardProps {
   className?: string;
@@ -129,9 +130,10 @@ const NotificationSection: React.FC<{ className: string; sysMessages: SystemMess
 
       <div id="systemMessages" className="space-y-2 text-sm">
         <ul className="list-disc list-inside">
-          {sysMessages.map((msg) => (
+          <MessageList />
+          {/* {sysMessages.map((msg) => (
             <li key={msg.id}>{msg.content}</li>
-          ))}
+          ))} */}
         </ul>
       </div>
 
@@ -220,24 +222,51 @@ const DetailsAtGlanceSection: React.FC<DetailsAtGlanceProps> = ({ className, use
 const ActionsSection: React.FC<{ className: string }> = ({ className }) => {
   
   const [isModalOpen, setModalOpen] = useState(false);
-  const addProject = () => {
+  const addProject = async () => {
     // Logic to add a project
-   
-    console.log("Project added!");
-
+    const title = (document.getElementById("project_title") as HTMLInputElement).value;
+    const description = (document.getElementById("project_description") as HTMLTextAreaElement).value;
+    const access_token = localStorage.getItem("access_token");
+    if (!access_token) {
+      window.location.href = "/login"; // Redirect to login page
+      return;
+    }
+    const userData = JSON.parse(localStorage.getItem("user") || "{}");
+    if (!userData.id) {
+      alert("User data not found.");
+      return;
+    }    
+    const res = await fetch(`${API_BASE}/project/add`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        title,
+        description,
+        created_by : userData.id,
+      })
+    })
+    const data = await res.json();
+    if (!res.ok) alert(data.message || "Data fetch failed.");
+    if (data) {
+      alert("Project added successfully.");
+      window.location.reload();
+    }
+    
   };  
 
   return (  
     <section className={`${className} bg-white rounded-xl border border-gray-500 shadow p-6`}>
         <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)} title="Add Project">
-            <form onSubmit={addProject}>
+            <form className="space-y-4" onSubmit={(e) => { e.preventDefault(); addProject(); }}>
               <div className="mb-4">
                 <label className="block text-gray-700 font-bold mb-2">Title</label>
-                <input title="title" type="text" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+                <input title="title" type="text" id="project_title" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
               </div>
               <div className="mb-4">
                 <label className="block text-gray-700 font-bold mb-2">Description</label>
-                <textarea title="description" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
+                <textarea title="description" id="project_description" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
               </div>
               <div className="mb-4">
                 <button type="submit" className="bg-blue-500 text-white p-3 rounded-xl">Add Project</button>
