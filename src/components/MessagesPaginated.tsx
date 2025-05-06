@@ -40,19 +40,7 @@ const MessageList: React.FC = () => {
 
   return (
     <div>		
-		<div className="flex items-center justify-center p-4">
-			<button onClick={handlePrev} disabled={currentPage === 1} 
-				className={`bg-green-500 text-white px-4 py-2 rounded ${currentPage === 1 ? 'bg-red-600 opacity-50 cursor-not-allowed' :'' }`}>
-			Previous
-			</button>
-			<span className="mx-4">
-			Page {currentPage} of {totalPages}
-			</span>
-			<button onClick={handleNext} disabled={currentPage === totalPages} 
-				className={`bg-green-500 text-white px-4 py-2 rounded ${currentPage === totalPages ? 'bg-red-600 opacity-50 cursor-not-allowed' :'' }`}>
-			Next
-			</button>
-		</div>
+		<Paginator currentPage={currentPage} totalPages={totalPages} handlePrev={handlePrev} handleNext={handleNext} />
 		<div>        
 			<table className="table-auto w-full border-collapse border border-gray-300">
 				<thead>
@@ -73,8 +61,14 @@ const MessageList: React.FC = () => {
 				</tbody>
 			</table>         
 		</div>
+		<Paginator currentPage={currentPage} totalPages={totalPages} handlePrev={handlePrev} handleNext={handleNext} />
+    </div>
+  );
+};
 
-		<div className="flex items-center justify-center p-4">
+const Paginator: React.FC<{ currentPage: number; totalPages: number; handlePrev: () => void; handleNext: () => void }> = ({ currentPage, totalPages, handlePrev, handleNext }) => {
+  return (
+	<div className="flex items-center justify-center p-4">
 			<button onClick={handlePrev} disabled={currentPage === 1} 
 				className={`bg-green-500 text-white px-4 py-2 rounded ${currentPage === 1 ? 'bg-red-600 opacity-50 cursor-not-allowed' :'' }`}>
 			Previous
@@ -87,9 +81,8 @@ const MessageList: React.FC = () => {
 			Next
 			</button>
 		</div>
-    </div>
-  );
-};
+	);
+}
 
 
 export default MessageList;
