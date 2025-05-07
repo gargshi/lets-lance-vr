@@ -9,6 +9,8 @@ interface DashboardProps {
   className?: string;
 }
 
+
+
 // interface SystemMessage {
 //   id: number;
 //   content: string;
@@ -130,10 +132,7 @@ const NotificationSection: React.FC<{ className: string }> = ({ className }) => 
 
       <div id="systemMessages" className="space-y-2 text-sm">
         <ul className="list-disc list-inside">
-          <MessageList />
-          {/* {sysMessages.map((msg) => (
-            <li key={msg.id}>{msg.content}</li>
-          ))} */}
+          <MessageList type="system" />          
         </ul>
       </div>
 

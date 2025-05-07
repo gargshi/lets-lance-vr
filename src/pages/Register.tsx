@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import API_BASE from '../components/config';
 
 interface RegisterProps {
   className?: string;
@@ -8,6 +9,7 @@ const Register: React.FC<RegisterProps> = ({ className = '' }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
+  const [role, setRole] = useState('normal'); // Default role is 'user'
   
   // Function to initialize dark mode
   const dark_mode_init = () => {
@@ -38,8 +40,26 @@ const Register: React.FC<RegisterProps> = ({ className = '' }) => {
   }, []);
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setRole('normal'); // Set default role to 'user' on form submission
     console.log('Registering:', name, email, password);
     // Add API call here
+    fetch(`${API_BASE}/register`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ name, email, password, role }),
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log('Success:', data);
+      // Handle success (e.g., redirect or show a success message)        
+      window.location.href = '/login'; // Redirect to login page on success
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+      // Handle error (e.g., show an error message)
+    });
   };
 
   return (
@@ -66,7 +86,7 @@ const Register: React.FC<RegisterProps> = ({ className = '' }) => {
           className={className + " w-full mb-2 p-2 border rounded"}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-        />
+        />        
         <button type="submit" className="w-full bg-green-500 text-white py-2 rounded">
           Register
         </button>
