@@ -225,6 +225,11 @@ const ActionsSection: React.FC<{ className: string }> = ({ className }) => {
     // Logic to add a project
     const title = (document.getElementById("project_title") as HTMLInputElement).value;
     const description = (document.getElementById("project_description") as HTMLTextAreaElement).value;
+    const budget = (document.getElementById("project_budget") as HTMLInputElement).value;
+    if (!title || !description || !budget) {
+      alert("Please fill in all fields.");
+      return;
+    }
     const access_token = localStorage.getItem("access_token");
     if (!access_token) {
       window.location.href = "/login"; // Redirect to login page
@@ -244,6 +249,7 @@ const ActionsSection: React.FC<{ className: string }> = ({ className }) => {
         title,
         description,
         created_by : userData.id,
+        budget
       })
     })
     const data = await res.json();
@@ -268,6 +274,10 @@ const ActionsSection: React.FC<{ className: string }> = ({ className }) => {
                 <textarea title="description" id="project_description" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
               </div>
               <div className="mb-4">
+                <label className="block text-gray-700 font-bold mb-2">Budget</label>
+                <input type="number" title="budget" id="project_budget" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+              </div>
+              <div className="mb-4">                
                 <button type="submit" className="bg-blue-500 text-white p-3 rounded-xl">Add Project</button>
               </div>
             </form> 
