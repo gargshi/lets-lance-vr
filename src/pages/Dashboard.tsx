@@ -4,6 +4,7 @@ import { dark_mode_init } from '../utils_tsx/darkmode';
 import ProjectSection from "../components/ProjectSection";
 import Modal from "../components/Modal";
 import MessageList from "../components/MessagesPaginated";
+import { isTokenExpired } from "../utils_tsx/token_expiry_check";
 
 interface DashboardProps {
   className?: string;
@@ -28,6 +29,17 @@ interface DetailsAtGlanceProps {
 
 const Dashboard: React.FC<DashboardProps> = ({ className = '' }) => {
   // const [sysMessages, setSysMessages] = useState<SystemMessage[]>([]);
+
+  const token = localStorage.getItem('access_token');
+  if (token && isTokenExpired(token)) {
+    alert('Token has expired. Please login again...');
+    localStorage.removeItem('access_token'); // Clear expired token
+    localStorage.removeItem('user'); // Clear user data
+    window.location.href = "/login"; // Redirect to login or refresh the token
+  // Redirect to login or refresh the token
+  } else {
+    console.log('Token is still valid.');
+  }
 
   const fetchData = async (url: string, method: string = "GET", body: any = null) => {
     const access_token = localStorage.getItem("access_token");

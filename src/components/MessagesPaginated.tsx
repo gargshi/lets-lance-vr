@@ -6,6 +6,7 @@ type Message = {
   sender: string;
   content: string;
   received_at: string;
+  severity: string;
 };
 
 interface MessageListProps {
@@ -17,7 +18,6 @@ const limit = 10;
 const MessageList: React.FC<MessageListProps> = ({type = 'system'}) => {
   const [allMessages, setAllMessages] = useState<Message[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
-
   const userData = JSON.parse(localStorage.getItem('user') || '{}');
 
   useEffect(() => {
@@ -66,20 +66,25 @@ const MessageList: React.FC<MessageListProps> = ({type = 'system'}) => {
 				<table className="table-auto w-full border-collapse border border-gray-300">
 					<thead>
 						<tr>
-							<th className="border border-gray-300 px-4 py-2">Sender</th>
-							<th className="border border-gray-300 px-4 py-2">Content</th>
-							<th className="border border-gray-300 px-4 py-2">Received At</th>
-							<th className="border border-gray-300 px-4 py-2"></th>
+							<th className="border border-gray-300 px-4 py-1">Sender</th>
+							<th className="border border-gray-300 px-4 py-1">Severity</th>
+							<th className="border border-gray-300 px-4 py-1">Content</th>
+							<th className="border border-gray-300 px-4 py-1">Received At</th>
+							<th className="border border-gray-300 px-4 py-1"></th>
 						</tr>
 					</thead>
 					<tbody>
 						{currentMessages.map((msg) => (
 							<tr key={msg.id}>						
-								<td className="border border-gray-300 px-4 py-2">{msg.sender}</td>
-								<td className="border border-gray-300 px-4 py-2">{msg.content}</td>
-								<td className="border border-gray-300 px-4 py-2">{new Date(msg.received_at).toLocaleString()}</td>
-								<td className="border border-gray-300 px-4 py-2">
-									<button className="bg-red-500 text-white px-4 py-2 rounded" onClick={() => { handleDelete(msg.id, 'system');}}>Delete</button>
+								<td className="border border-gray-300 px-4 py-1">{msg.sender}</td>
+								<td className={`border border-gray-300 px-4 font-bold py-1 
+									${msg.severity === 'normal' ? 'bg-blue-500' : ''} 
+									${msg.severity === 'error' ? 'bg-red-500' : ''} 
+									${msg.severity === 'success' ? 'bg-green-500' : ''} `}>{msg.severity.toUpperCase()}</td>
+								<td className="border border-gray-300 px-4 py-1">{msg.content}</td>
+								<td className="border border-gray-300 px-4 py-1">{new Date(msg.received_at).toLocaleString()}</td>
+								<td className="border border-gray-300 px-4 py-1">
+									<button className="bg-red-500 text-white px-4 py-1 rounded" onClick={() => { handleDelete(msg.id, 'system');}}>Delete</button>
 								</td>
 							</tr>
 						))}
