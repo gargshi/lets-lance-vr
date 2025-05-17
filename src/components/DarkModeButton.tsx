@@ -48,7 +48,7 @@ const DarkModeButton = () => {
     const newMode = !isDark;
     setIsDark(newMode);
     // document.documentElement.classList.toggle('dark', newMode);
-	e.currentTarget.classList.toggle('dark', newMode);
+	  e.currentTarget.classList.toggle('dark', newMode);
     localStorage.setItem('dark-mode', newMode.toString());
 
     // Optional: If you want to still toggle extra elements
@@ -63,6 +63,7 @@ const DarkModeButton = () => {
     document.querySelectorAll('.border')?.forEach((el) => {
       el.classList.toggle('dark:border-gray-500', newMode);
     });
+    // window.location.reload();
   };
 
   return (
