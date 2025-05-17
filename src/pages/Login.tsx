@@ -11,6 +11,10 @@ const Login: React.FC<LoginProps>= ({ className = '' }) => {
   const [loginStatus,setLoginStatus] = useState('Please Enter your credentials to login');
   const [statusClr,setStatusClr] = useState('gray-500');
 
+  React.useEffect(() => {
+    setStatusClr('gray-500');
+  }, []);
+
   const dark_mode_init = () => {
       const darkMode = localStorage.getItem('dark-mode') === 'true';
       if (darkMode) {
