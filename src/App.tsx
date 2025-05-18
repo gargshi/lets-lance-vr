@@ -40,8 +40,9 @@ function App() {
 }
 
 function Home() {
-  
-
+  React.useEffect(() => {
+    dark_mode_init();    
+  })
   
   return (
     <>

@@ -8,12 +8,9 @@ interface LoginProps {
 const Login: React.FC<LoginProps>= ({ className = '' }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [loginStatus,setLoginStatus] = useState('Please Enter your credentials to login');
+  const [loginStatus,setLoginStatus] = useState('Please enter your email and password');
   const [statusClr,setStatusClr] = useState('gray-500');
-
-  React.useEffect(() => {
-    setStatusClr('gray-500');
-  }, []);
+  
 
   const dark_mode_init = () => {
       const darkMode = localStorage.getItem('dark-mode') === 'true';
@@ -77,30 +74,31 @@ const Login: React.FC<LoginProps>= ({ className = '' }) => {
   };
 
   return (
-    <div className={ className + " max-w-sm mx-auto mt-10 p-6 bg-white rounded shadow border"}>
-      <h2 className="text-xl font-bold mb-4">Login</h2>
-      {loginStatus && <p className={`mt-2 py-2 text-center bg-`+ statusClr +` text-white`}>{loginStatus}</p>}
+    <div className={ className + " max-w-sm mx-auto mt-10 p-6 bg-white rounded shadow border border-gray-500"}>
+      <h2 className="text-xl font-bold mb-4">Login</h2>      
+      <div className={`w-full bg-${statusClr} text-white px-4 py-2 rounded`}>
+          {loginStatus}
+      </div>
       <br />
       <form onSubmit={handleSubmit}>
         <input
           type="email"
           placeholder="Email"
-          className={ className  + " w-full mb-2 p-2 border rounded" }
+          className={ className  + " w-full mb-2 p-2 border border-gray-500 rounded" }
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
         <input
           type="password"
           placeholder="Password"
-          className={className + " w-full mb-2 p-2 border rounded"}
+          className={className + " w-full mb-2 p-2 border border-gray-500 rounded"}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <button type="submit" className="w-full bg-blue-500 text-white py-2 rounded">
+        <button type="submit" className={`w-full bg-blue-500 text-white py-2 rounded`}>
           Login
         </button>
-      </form>
-      
+      </form>      
     </div>
   );
 };
