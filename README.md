@@ -28,7 +28,7 @@
 ## 📦 Installation
 
 ```bash
-git clone https://github.com/yourusername/lets-lance.git
+git clone https://github.com/gargshi/lets-lance.git
 cd lets-lance
 pip install -r requirements.txt
 python app.py
