@@ -34,7 +34,7 @@ python app.py
 
 
 
-# React + TypeScript + Vite
+<!-- # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
@@ -54,4 +54,4 @@ You can deploy your new Vite project with a single command from your terminal us
 
 ```shell
 $ vercel
-```
+``` -->
