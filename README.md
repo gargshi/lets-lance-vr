@@ -1,5 +1,7 @@
 # 🧑‍💻 Let's Lance
 
+🚧 **This project is currently under active development. Features and structure may change frequently.**
+
 **Let's Lance** is a modern freelancing platform that connects clients and freelancers with a clean, efficient, and user-friendly experience. Built with Flask, SQLite, and Tailwind CSS, it's designed for speed, simplicity, and scalability.
 
 ---
