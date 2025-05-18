@@ -23,16 +23,6 @@
 - **Frontend**: HTML, Tailwind CSS, JavaScript
 - **Authentication**: JWT (JSON Web Tokens)
 
----
-
-## 📦 Installation
-
-```bash
-git clone https://github.com/gargshi/lets-lance.git
-cd lets-lance
-pip install -r requirements.txt
-python app.py
-```
 
 
 
