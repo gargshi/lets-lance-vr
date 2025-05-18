@@ -1,3 +1,39 @@
+# 🧑‍💻 Let's Lance
+
+**Let's Lance** is a modern freelancing platform that connects clients and freelancers with a clean, efficient, and user-friendly experience. Built with Flask, SQLite, and Tailwind CSS, it's designed for speed, simplicity, and scalability.
+
+---
+
+## 🚀 Features
+
+- 📝 User registration & login
+- 🔐 JWT-based authentication
+- 💼 Freelancer dashboard
+- 📂 Project listings & management
+- ⚙️ Backend built with Flask & SQLAlchemy
+- 🎨 Tailwind CSS for responsive UI
+
+---
+
+## 🛠 Tech Stack
+
+- **Backend**: Flask, SQLite, SQLAlchemy
+- **Frontend**: HTML, Tailwind CSS, JavaScript
+- **Authentication**: JWT (JSON Web Tokens)
+
+---
+
+## 📦 Installation
+
+```bash
+git clone https://github.com/yourusername/lets-lance.git
+cd lets-lance
+pip install -r requirements.txt
+python app.py
+```
+
+
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
