@@ -157,7 +157,7 @@ const Register: React.FC<RegisterProps> = ({ className = '' }) => {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
-        <div className={`bg-${registerStatus.email.color} transition-all duration-300 mb-2 px-2 ease-in-out `}>{registerStatus.email.status}</div>
+        <div className={`bg-${registerStatus.email.color} ${email ? '' : 'hidden'} transition-all duration-300 mb-2 px-2 ease-in-out `}>{registerStatus.email.status}</div>
         <input
           type="password"
           placeholder="Password"
@@ -172,11 +172,19 @@ const Register: React.FC<RegisterProps> = ({ className = '' }) => {
           value={repassword}
           onChange={(e) => setRePassword(e.target.value)}
         />
-        <div className={`bg-${registerStatus.password.color} transition-all duration-300 mb-2 px-2 ease-in-out`}>{registerStatus.password.status}</div>
+        <div className={`bg-${registerStatus.password.color} ${password ? '' : 'hidden'} transition-all duration-300 mb-2 px-2 ease-in-out`}>{registerStatus.password.status}</div>
         <button type="submit" className={`w-full ${canRegister ? 'bg-blue-900 hover:bg-green-500 cursor-pointer' : ' bg-gray-500 opacity-50 cursor-not-allowed'} text-white py-2 rounded transition duration-300`} disabled={!canRegister}>
           Register
         </button>
       </form>
+      <div className={`w-full px-4 mt-4 py-2 darkm rounded`}>
+        <p className="text-center">
+          Already have an account?{' '}
+          <a href="/login" className="text-blue-400 hover:underline">
+            Login
+          </a>
+        </p>
+      </div>
     </div>
   );
 };

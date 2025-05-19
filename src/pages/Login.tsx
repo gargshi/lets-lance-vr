@@ -41,6 +41,12 @@ const Login: React.FC<LoginProps>= ({ className = '' }) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!email || !password) {
+      setLoginStatus('Please enter your email and password');
+      setStatusClr('red-500');
+      return;
+    }
     
     console.log('Logging in:', email, password);
     setLoginStatus('Logging in...');
@@ -75,8 +81,11 @@ const Login: React.FC<LoginProps>= ({ className = '' }) => {
 
   return (
     <div className={ className + " max-w-sm mx-auto mt-10 p-6 bg-white rounded shadow border border-gray-500"}>
-      <h2 className="text-xl font-bold mb-4">Login</h2>      
-      <div className={`w-full bg-${statusClr} text-white px-4 py-2 rounded`}>
+      <h2 className="text-xl font-semibold  mb-4">Login</h2>      
+      <div className={`w-full px-4 py-2 rounded`}>
+          Please enter your email and password
+      </div>
+      <div className={`w-full ${!email || !password ? 'hidden' : ''} bg-${statusClr} text-white px-4 py-2 rounded`}>
           {loginStatus}
       </div>
       <br />
@@ -84,21 +93,29 @@ const Login: React.FC<LoginProps>= ({ className = '' }) => {
         <input
           type="email"
           placeholder="Email"
-          className={ className  + " w-full mb-2 p-2 border border-gray-500 rounded" }
+          className={ className  + " w-full mb-4 p-2 border border-gray-500 rounded" }
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
         <input
           type="password"
           placeholder="Password"
-          className={className + " w-full mb-2 p-2 border border-gray-500 rounded"}
+          className={className + " w-full mb-4 p-2 border border-gray-500 rounded"}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <button type="submit" className={`w-full bg-blue-500 text-white py-2 rounded`}>
+        <button type="submit" className={`w-full bg-blue-500 text-white py-2 rounded ${!email || !password ? 'opacity-50 cursor-not-allowed' : ''}`} disabled={!email || !password}>
           Login
         </button>
       </form>      
+      <div className={`w-full px-4 mt-4 py-2 darkm rounded`}>
+        <p className="text-center">
+          Don't have an account?{' '}
+          <a href="/register" className="text-blue-400 hover:underline">
+            Register
+          </a>
+        </p>
+      </div>
     </div>
   );
 };
