@@ -1,4 +1,5 @@
 import React from 'react';
+import { useEffect } from 'react';
 
 type ModalProps = {
 	className?: string;
@@ -10,15 +11,30 @@ type ModalProps = {
 };
 
 const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children, dataStr }) => {
-  if (!isOpen) return null;
-
-  if (!dataStr) {
-    // console.log("---");
+  
+  if (!dataStr) {    
     console.log("--");
   }
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    if (isOpen) {
+      window.addEventListener('keydown', handleKeyDown);
+    }
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isOpen, onClose]);
+
+  if (!isOpen) return null;
   return (
-    <div className={`{ className } fixed inset-0 z-50 flex items-center justify-center backdrop-blur bg-black/30`}>
+    <div className={`{ className } fixed inset-0 z-50 flex items-center justify-center backdrop-blur bg-black/30`} onClick={onClose}>
       <div className="bg-white rounded-lg shadow-lg w-96 p-6 relative">
         <h2 className="text-xl text-gray-800 font-semibold mb-4">{title}</h2>
         <button
