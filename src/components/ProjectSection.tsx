@@ -22,7 +22,7 @@ interface ProjectCardProps {
 	id: number;
 	title: string;
 	postedBy: string;
-	projectName: string;
+	projectDescription: string;
 	budget: number;
 	canDelete: boolean;
 	openModalProject: () => void;
@@ -34,6 +34,7 @@ const ProjectSection:React.FC<ProjectSectionProps> = ({className=""}) => {
 	const [currentPage, setCurrentPage] = React.useState<number>(1);
 	const [isModalOpen, setModalOpen] = React.useState(false);
 	const [isProjectModalOpen, setProjectModalOpen] = React.useState(false);
+	const [dataStr, setDataStr] = React.useState<LobbyProject|any>();
 
 
 	const userData = JSON.parse(localStorage.getItem("user") || "{}");
@@ -56,7 +57,7 @@ const ProjectSection:React.FC<ProjectSectionProps> = ({className=""}) => {
 			if (!res.ok) alert(data.message || "Data fetch failed.");
 			
 			if (data) {
-				setLobbyProjects(data);				
+				setLobbyProjects(data);						
 			}
 		}
 	};
@@ -141,26 +142,41 @@ const ProjectSection:React.FC<ProjectSectionProps> = ({className=""}) => {
               </div>
             </form> 
       	</Modal>
-		<Modal isOpen={isProjectModalOpen} onClose={() => setProjectModalOpen(false)} title="Viewing Project">
-			<div className="mb-4">
-				<h2 className="text-gray-700 font-bold mb-2">Project Details</h2>
-				<p className="text-gray-600">Project ID: {LobbyProjects[0]?.id}</p>
-				<p className="text-gray-600">Title: {LobbyProjects[0]?.title}</p>				
+		<Modal isOpen={isProjectModalOpen} onClose={() => setProjectModalOpen(false)} title="Viewing Project" dataStr>
+			<div className="mb-4 space-y-3">
+				<h2 className="text-xl font-semibold text-gray-800 border-b pb-2">{dataStr?.title ?? '-'}</h2>
+				<div className="flex justify-between text-sm text-gray-700">
+					<span className="font-medium">Project ID:</span>
+					<span>{dataStr?.id ?? '-'}</span>
+				</div>
+
+				<div className="flex justify-between text-sm text-gray-700">
+					<span className="font-medium">Title:</span>
+					<span>{dataStr?.title ?? '-'}</span>
+				</div>
+
+				<div className="flex justify-between text-sm text-gray-700">
+					<span className="font-medium">Budget:</span>
+					<span>${dataStr?.budget ?? '0'}</span>
+				</div>
+				<div className="text-sm text-gray-700 mt-4">
+					<h3 className="font-medium text-gray-800 mb-1">Description:</h3>
+					<div className="max-h-40 overflow-y-auto pr-2 leading-relaxed text-gray-600">
+						{dataStr?.description ?? 'No description provided.'}
+					</div>
+				</div>
 			</div>
+
+			{/* <div className="mb-4">
+				<h2 className="text-gray-700 font-bold mb-2">Project Details</h2>			
+						<p className="text-gray-600">Project ID: {dataStr?.id}</p>
+						<p className="text-gray-600">Title: {dataStr?.title}</p>
+						<p className="text-gray-600">Budget: {dataStr?.budget}</p>						
+			</div> */}
 		</Modal>
 		<Paginator currentPage={currentPage} totalPages={totalPages} handlePrev={handlePrev} handleNext={handleNext} />
-		<table className="table-auto w-full border-collapse border border-gray-300 mb-4">
-			<thead>
-				<tr>
-					<th className="border border-gray-300 px-4">Project ID</th>
-					<th className="border border-gray-300 px-4">Title</th>
-					<th className="border border-gray-300 px-4">Description</th>
-					<th className="border border-gray-300 px-4">Budget</th>
-					<th className="border border-gray-300 px-4">Created_by</th>
-					<th className="border border-gray-300 px-4">Actions</th>
-				</tr>
-			</thead>
-			<tbody>
+		<>
+			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-4">
 				{currentProjects.map((project) => (
 					<ProjectCard 
 						className={className} 
@@ -174,13 +190,47 @@ const ProjectSection:React.FC<ProjectSectionProps> = ({className=""}) => {
 								project.created_by
 							)
 						} 
-						projectName={project.description} 
-						budget={project.budget} 
+						budget={project.budget}
+						projectDescription={project.description}
 						canDelete={project.created_by === userData.name}
-						openModalProject={() => setProjectModalOpen(true)} />
+						openModalProject={() => {setProjectModalOpen(true); setDataStr(project);}}					
+					/>
 				))}
-			</tbody>
-		</table>
+			</div>
+			{/* <table className="table-auto w-full border-collapse border border-gray-300 mb-4 hidden lg:table">
+				<thead>
+					<tr>
+						<th className="border border-gray-300 px-4">Project ID</th>
+						<th className="border border-gray-300 px-4">Title</th>
+						<th className="border border-gray-300 px-4">Description</th>
+						<th className="border border-gray-300 px-4">Budget</th>
+						<th className="border border-gray-300 px-4">Created_by</th>
+						<th className="border border-gray-300 px-4">Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					{currentProjects.map((project) => (
+						<ProjectCard 
+							className={className} 
+							id={project.id} 
+							key={project.id} 
+							title={project.title} 
+							postedBy={ 
+								project.created_by === userData.name ? (
+									project.created_by + " (You)"
+								) : (
+									project.created_by
+								)
+							} 
+							projectDescription={project.description} 
+							budget={project.budget} 
+							canDelete={project.created_by === userData.name}
+							openModalProject={() => {setProjectModalOpen(true); setDataStr(project);}} />
+					))}
+				</tbody>
+			</table> */}
+		</>
+		
 		<Paginator currentPage={currentPage} totalPages={totalPages} handlePrev={handlePrev} handleNext={handleNext} />
 		<div className="flex justify-center mt-4">
 			<button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-200" onClick={() => setModalOpen(true)}>
@@ -191,7 +241,7 @@ const ProjectSection:React.FC<ProjectSectionProps> = ({className=""}) => {
   );
 }
 
-const ProjectCard: React.FC<ProjectCardProps> = ({ className, id, title, postedBy, projectName, budget, canDelete, openModalProject }) => {
+const ProjectCard: React.FC<ProjectCardProps> = ({ id, title, postedBy, projectDescription, budget, canDelete, openModalProject }) => {
 	const DeleteProject = async (id: number) => {
 		const access_token = localStorage.getItem("access_token");
 		if (!access_token) {
@@ -213,29 +263,64 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ className, id, title, postedB
 		}
 	};
 	return (
-		<tr key={id} className={`${className} project-card border-b border-gray-300`}>
-			<td className="border border-gray-300 px-4">{id}</td>
-			<td className="border border-gray-300 px-4">{title}</td>
-			<td className="border border-gray-300 px-4">{projectName}</td>
-			<td className="border border-gray-300 px-4">${budget}</td>
-			<td className="border border-gray-300 px-4">{postedBy}</td>
-			<td className="border border-gray-300 px-4 flex space-x-2">
-				<button type="button" title="View" className="bg-blue-500 text-white px-2 py-1 rounded-lg hover:bg-blue-600 transition duration-200 ml-2" onClick={() => { openModalProject(); }}>
-					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-5">
-						<path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
-						<path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-					</svg>
-				</button>
-				{canDelete && (
-					<button type="button" title="Delete" className="bg-red-500 text-white px-2 py-1 rounded-lg hover:bg-red-600 transition duration-200" onClick={() => DeleteProject(id)}>
+		<>
+			<div className="mb-6 rounded-xl border border-gray-500 p-6 shadow-md">
+					<p className='text-xs text-gray-20'> Posted by: <span className="font-medium text-gray-30">{postedBy}</span></p>
+				<div className='flex justify-between '>
+					<div>
+						<h2 className="text-lg font-semibold text-white-800 mt-2">{title}</h2>
+						<p className="text-base text-gray-60 hidden">{projectDescription}</p>
+						<a className='text-blue-400 text-sm cursor-pointer' onClick={() => { openModalProject(); }}>View Project</a>
+					</div>
+					<div className='flex flex-col items-end'>
+						<p className="text-base text-gray-70 font-medium mt-2 mb-1">Budget: <span className="text-green-500">${budget}</span></p>					
+						<div className='flex'>
+							<button type="button" title="View" className="bg-transparent border border-blue-500 text-white px-2 mr-1 py-1 rounded-lg hover:bg-blue-600 transition duration-200 ml-2" onClick={() => { openModalProject(); }}>
+								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-5">
+									<path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+									<path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+								</svg>
+							</button>
+							{canDelete && (
+								<button type="button" title="Delete" className="bg-transparent border border-red-500 text-white px-2 py-1 rounded-lg hover:bg-red-600 transition duration-200" onClick={() => DeleteProject(id)}>
+									<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-5">
+										<path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+									</svg>
+								</button>
+							)}
+						</div>						
+					</div>
+				</div>								
+				<p className="text-xs text-gray-20">Project ID: <span className="font-medium text-gray-30">{id}</span></p>
+			</div>
+
+			
+		
+			{/* <tr key={id} className={`${className} project-card border-b border-gray-300 hidden lg:table-row`}>
+				<td className="border border-gray-300 px-4">{id}</td>
+				<td className="border border-gray-300 px-4">{title}</td>
+				<td className="border border-gray-300 px-4">{projectDescription}</td>
+				<td className="border border-gray-300 px-4">${budget}</td>
+				<td className="border border-gray-300 px-4">{postedBy}</td>
+				<td className="border border-gray-300 px-4 flex space-x-2">
+					<button type="button" title="View" className="bg-blue-500 text-white px-2 py-1 rounded-lg hover:bg-blue-600 transition duration-200 ml-2" onClick={() => { openModalProject(); }}>
 						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-5">
-							<path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+							<path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+							<path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
 						</svg>
 					</button>
-				)}
-				
-			</td>
-		</tr>
+					{canDelete && (
+						<button type="button" title="Delete" className="bg-red-500 text-white px-2 py-1 rounded-lg hover:bg-red-600 transition duration-200" onClick={() => DeleteProject(id)}>
+							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-5">
+								<path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+							</svg>
+						</button>
+					)}
+					
+				</td>
+			</tr> */}
+		</>					
+		
 	)
 };
 

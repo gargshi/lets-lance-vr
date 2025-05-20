@@ -8,7 +8,7 @@ interface LoginProps {
 const Login: React.FC<LoginProps>= ({ className = '' }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [loginStatus,setLoginStatus] = useState('Please enter your email and password');
+  const [loginStatus,setLoginStatus] = useState('');
   const [statusClr,setStatusClr] = useState('gray-500');
   
 
