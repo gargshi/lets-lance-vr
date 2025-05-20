@@ -124,7 +124,7 @@ const ProjectSection:React.FC<ProjectSectionProps> = ({className=""}) => {
   return (
 	<section className={`${className} project-section bg-white rounded-xl shadow p-6 col-span-3 lg:col-span-2 border border-gray-500`}>
 		<h2 className="text-lg font-semibold mb-4">Lobby Projects</h2>
-		<div className='flex'>
+		<div className='flex space-x-4'>
 			<select title="select no of columns" className="mb-4 darkm hidden md:block" onChange={(e) => { setNoOfCols(parseInt(e.target.value)); }}>
 				<option value="1">1 Column</option>
 				<option value="2">2 Columns</option>
