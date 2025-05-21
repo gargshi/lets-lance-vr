@@ -79,7 +79,7 @@ const MessageList: React.FC<MessageListProps> = ({type = 'system'}) => {
 				<div className={`grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-4`}>
 					{currentMessages.map((msg) => (						
 						<div
-							className={`rounded-lg border border-gray-500 p-4 shadow-sm transition duration-300 ${sevClrBdr[msg.severity]} hover:border-1`}
+							className={`rounded-lg border border-gray-500 p-4 md:p-2 shadow-sm transition duration-300 ${sevClrBdr[msg.severity]} hover:border-1 cursor-default`}
 							key={msg.id}
 							>
 							<div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
@@ -90,7 +90,7 @@ const MessageList: React.FC<MessageListProps> = ({type = 'system'}) => {
 											<span className="font-medium ">{msg.sender}</span>
 										</p>
 										<button
-											className="text-red-500 hover:text-red-700 text-xs font-semibold px-1 py-1 rounded border border-red-200 hover:border-red-500 transition sm:hidden"
+											className="text-red-800 hover:text-red-700 text-xs font-semibold px-1 py-1 rounded border border-red-500 hover:border-red-200 transition sm:hidden"
 											onClick={() => handleDelete(msg.id, 'system')}
 											title="Dismiss"
 										>
@@ -107,7 +107,7 @@ const MessageList: React.FC<MessageListProps> = ({type = 'system'}) => {
 								<div className="flex items-center gap-2">
 									<p className="text-xs ">{new Date(msg.received_at).toLocaleString()}</p>
 									<button
-											className={`text-red-500 hover:text-red-700 text-xs font-semibold px-1 py-1 rounded border border-red-200 hover:border-red-500 transition hidden sm:block`}
+											className={`text-red-500 hover:text-red-700 text-xs font-semibold px-1 py-1 rounded border border-red-500 hover:border-red-200 transition hidden sm:block`}
 											onClick={() => handleDelete(msg.id, 'system')}
 											title="Dismiss"
 										>
@@ -131,14 +131,14 @@ const Paginator: React.FC<{ currentPage: number; totalPages: number; handlePrev:
   return (
 	<div className="flex items-center justify-center p-4">
 			<button onClick={handlePrev} disabled={currentPage === 1 && totalPages <= 1} 
-				className={`bg-green-500 text-white px-4 py-2 rounded ${currentPage === 1 && totalPages <= 1 ? 'bg-red-600 opacity-50 cursor-not-allowed' :'' }`}>
+				className={`bg-green-500 text-white px-2 py-2 rounded ${currentPage === 1 && totalPages <= 1 ? 'bg-red-600 opacity-50 cursor-not-allowed' :'' }`}>
 			Previous
 			</button>
 			<span className="mx-4">
 			Page {currentPage} of {totalPages}
 			</span>
 			<button onClick={handleNext} disabled={currentPage === totalPages || totalPages === 0} 
-				className={`bg-green-500 text-white px-4 py-2 rounded ${currentPage === totalPages || totalPages === 0 ? 'bg-red-600 opacity-50 cursor-not-allowed' :'' }`}>
+				className={`bg-green-500 text-white px-2 py-2 rounded ${currentPage === totalPages || totalPages === 0 ? 'bg-red-600 opacity-50 cursor-not-allowed' :'' }`}>
 			Next
 			</button>
 		</div>

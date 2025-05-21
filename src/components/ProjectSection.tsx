@@ -28,7 +28,7 @@ interface ProjectCardProps {
 	openModalProject: () => void;
 }
 
-const limit = 10;
+// const limit = 10;
 const ProjectSection:React.FC<ProjectSectionProps> = ({className=""}) => {
 	const [LobbyProjects, setLobbyProjects] = React.useState<LobbyProject[]>([]);
 	const [currentPage, setCurrentPage] = React.useState<number>(1);
@@ -36,6 +36,7 @@ const ProjectSection:React.FC<ProjectSectionProps> = ({className=""}) => {
 	const [isProjectModalOpen, setProjectModalOpen] = React.useState(false);
 	const [dataStr, setDataStr] = React.useState<LobbyProject|any>();
 	const [noOfCols, setNoOfCols] = React.useState<number>(1);
+	const [limit, setLimit] = React.useState<number>(10);
 
 
 	const userData = JSON.parse(localStorage.getItem("user") || "{}");
@@ -124,17 +125,27 @@ const ProjectSection:React.FC<ProjectSectionProps> = ({className=""}) => {
   return (
 	<section className={`${className} project-section bg-white rounded-xl shadow p-6 col-span-3 lg:col-span-2 border border-gray-500`}>
 		<h2 className="text-lg font-semibold mb-4">Lobby Projects</h2>
-		<div className='flex space-x-4'>
-			<select title="select no of columns" className="mb-4 darkm hidden md:block" onChange={(e) => { setNoOfCols(parseInt(e.target.value)); }}>
-				<option value="1">1 Column</option>
-				<option value="2">2 Columns</option>
-				<option value="3">3 Columns</option>
-			</select>
+		<div className='flex space-x-4 border border-gray-500 p-4 text-sm justify-center items-center'>
+			<div className="flex flex-col items-center space-x-2">
+				<p className='hidden md:block'>View Columns</p>
+				<select title="select no of columns" className="mb-4 darkm hidden md:block" onChange={(e) => { setNoOfCols(parseInt(e.target.value)); }}>
+					<option value="1">1 Column</option>
+					<option value="2">2 Columns</option>
+					<option value="3">3 Columns</option>
+				</select>
+			</div>
+			<div className="flex flex-col items-center space-x-2">
+				<p className='hidden md:block'>Records per page</p>
+				<select title="select records per page" className="mb-4 darkm" onChange={(e) => { setLimit(parseInt(e.target.value)); }}>
+					<option value="10">10 Records</option>
+					<option value="20">20 Records</option>
+					<option value="30">30 Records</option>
+				</select>
+			</div>
 			
 			<button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-200" onClick={() => setModalOpen(true)}>
 				Create New Project
-			</button>
-			
+			</button>			
 		</div>
 		<Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)} title="Add Project">
             <form className="space-y-4" onSubmit={(e) => { e.preventDefault(); addProject(); }}>
@@ -281,14 +292,14 @@ const Paginator: React.FC<{ currentPage: number; totalPages: number; handlePrev:
   return (
 	<div className="flex items-center justify-center p-4">
 			<button onClick={handlePrev} disabled={currentPage === 1} 
-				className={`bg-green-500 text-white px-4 py-2 rounded ${currentPage === 1 ? 'bg-red-600 opacity-50 cursor-not-allowed' :'' }`}>
+				className={`bg-green-500 text-white px-2 py-2 rounded ${currentPage === 1 ? 'bg-red-600 opacity-50 cursor-not-allowed' :'' }`}>
 			Previous
 			</button>
-			<span className="mx-4">
+			<span className="mx-4 text-sm">
 			Page {currentPage} of {totalPages}
 			</span>
 			<button onClick={handleNext} disabled={currentPage === totalPages || totalPages === 0} 
-				className={`bg-green-500 text-white px-4 py-2 rounded ${currentPage === totalPages || totalPages === 0 ? 'bg-red-600 opacity-50 cursor-not-allowed' :'' }`}>
+				className={`bg-green-500 text-white px-2 py-2 rounded ${currentPage === totalPages || totalPages === 0 ? 'bg-red-600 opacity-50 cursor-not-allowed' :'' }`}>
 			Next
 			</button>
 		</div>
