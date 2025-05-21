@@ -238,8 +238,8 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ id, title, postedBy, projectD
 	};
 	return (
 		<>
-			<div className="mb-6 rounded-xl border border-gray-500 p-6 shadow-md hover:border-blue-400 transition duration-300" onClick={() => { openModalProject(); }}>
-					<p className='text-xs text-gray-20'> Posted by: <span className="font-medium text-gray-30">{postedBy}</span></p>
+			<div className="mb-6 rounded-xl border border-gray-500 p-6 shadow-md hover:border-blue-400 transition duration-300" >
+				<p className='text-xs text-gray-20'> Posted by: <span className="font-medium text-gray-30">{postedBy}</span></p>
 				<div className='flex justify-between '>
 					<div>
 						<h2 className="text-lg font-semibold text-white-800 mt-2">{title}</h2>
