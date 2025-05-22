@@ -25,6 +25,7 @@ interface ProjectCardProps {
 	projectDescription: string;
 	budget: number;
 	canDelete: boolean;
+	createdAt: string;
 	openModalProject: () => void;
 }
 
@@ -69,6 +70,7 @@ const ProjectSection:React.FC<ProjectSectionProps> = ({className=""}) => {
 		dark_mode_init();
 		fetchProjectsLobby();
 	},[]);
+	const totalProjects = LobbyProjects.length;
 	const totalPages = Math.ceil(LobbyProjects.length / limit);
 	const startIndex = (currentPage - 1) * limit;
 	const reversedProjects = [...LobbyProjects].reverse();  
@@ -124,8 +126,24 @@ const ProjectSection:React.FC<ProjectSectionProps> = ({className=""}) => {
 
   return (
 	<section className={`${className} project-section bg-white rounded-xl shadow p-6 col-span-3 lg:col-span-2 border border-gray-500`}>
-		<h2 className="text-lg font-semibold mb-4">Lobby Projects</h2>
+		<div className="flex flex-row justify-between">
+			<div className='flex flex-row gap-4 mb-4 align-center'>
+				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
+					<path strokeLinecap="round" strokeLinejoin="round" d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 0 0 .75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 0 0-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0 1 12 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 0 1-.673-.38m0 0A2.18 2.18 0 0 1 3 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 0 1 3.413-.387m7.5 0V5.25A2.25 2.25 0 0 0 13.5 3h-3a2.25 2.25 0 0 0-2.25 2.25v.894m7.5 0a48.667 48.667 0 0 0-7.5 0M12 12.75h.008v.008H12v-.008Z" />
+				</svg>
+				<h2 className="text-lg font-semibold mb-4">
+					Lobby Projects
+				</h2>
+			</div>
+			<div className='flex flex-row gap-4 mb-4 align-center'>
+				<span className="text-lg font-semibold mb-4 bg-gray-500 text-white px-2 rounded">{totalProjects}</span>
+			</div>
+		</div>
 		<div className='flex space-x-4 border border-gray-500 p-4 text-sm justify-center items-center'>
+			{/* <div className="flex flex-col items-center space-x-2">
+				<p className=''>Total Projects</p>
+				<p className="mb-4 darkm">{totalProjects}</p>
+			</div> */}
 			<div className="flex flex-col items-center space-x-2">
 				<p className='hidden md:block'>View Columns</p>
 				<select title="select no of columns" className="mb-4 darkm hidden md:block" onChange={(e) => { setNoOfCols(parseInt(e.target.value)); }}>
@@ -200,6 +218,7 @@ const ProjectSection:React.FC<ProjectSectionProps> = ({className=""}) => {
 						id={project.id} 
 						key={project.id} 
 						title={project.title} 
+						createdAt={project.created_at}
 						postedBy={ 
 							project.created_by === userData.name ? (
 								project.created_by + " (You)"
@@ -226,7 +245,7 @@ const ProjectSection:React.FC<ProjectSectionProps> = ({className=""}) => {
   );
 }
 
-const ProjectCard: React.FC<ProjectCardProps> = ({ id, title, postedBy, projectDescription, budget, canDelete, openModalProject }) => {
+const ProjectCard: React.FC<ProjectCardProps> = ({ id, title, postedBy, projectDescription, budget, createdAt, canDelete, openModalProject }) => {
 	const DeleteProject = async (id: number) => {
 		const access_token = localStorage.getItem("access_token");
 		if (!access_token) {
@@ -247,10 +266,27 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ id, title, postedBy, projectD
 			window.location.reload();
 		}
 	};
+
+	function timeAgo(dateString: string): string {
+		const now = new Date();
+		const past = new Date(dateString);
+		const diffMs = now.getTime() - past.getTime();
+
+		const seconds = Math.floor(diffMs / 1000);
+		const minutes = Math.floor(diffMs / (1000 * 60));
+		const hours = Math.floor(diffMs / (1000 * 60 * 60));
+		const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+		if (seconds < 60) return `${seconds} seconds ago`;
+		if (minutes < 60) return `${minutes} minutes ago`;
+		if (hours < 24) return `${hours} hours ago`;
+		return `${days} days ago`;
+	}
+
 	return (
 		<>
 			<div className="mb-6 rounded-xl border border-gray-500 p-6 shadow-md hover:border-blue-400 transition duration-300" >
-				<p className='text-xs text-gray-20'> Posted by: <span className="font-medium text-gray-30">{postedBy}</span></p>
+				<p className='text-xs text-gray-20'> Posted by: <span className="font-medium text-gray-30">{postedBy}</span>, {timeAgo(createdAt)}</p>
 				<div className='flex justify-between '>
 					<div>
 						<h2 className="text-lg font-semibold text-white-800 mt-2">{title}</h2>
