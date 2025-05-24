@@ -28,7 +28,7 @@ interface DetailsAtGlanceProps {
 }
 
 const Dashboard: React.FC<DashboardProps> = ({ className = '' }) => {
-  // const [sysMessages, setSysMessages] = useState<SystemMessage[]>([]);
+  // const [sysMessages, setSysMessages] = useState<SystemMessage[]>([]); 
 
   const token = localStorage.getItem('access_token');
   if (token && isTokenExpired(token)) {
@@ -93,16 +93,22 @@ const Dashboard: React.FC<DashboardProps> = ({ className = '' }) => {
   return (
 	<main>
 		<div className={`${className} grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full p-4 bg-gray-100`}>
-			<NotificationSection className={`${className} col-span-3 lg:col-span-2`} />
-			<DetailsAtGlanceSection className={`${className} col-span-3 lg:col-span-1`} userData={userData} />
-			<ProjectSection className={`${className} col-span-3 lg:col-span-2`} />
-      <ActionsSection className={`${className} col-span-3 lg:col-span-1`} />      
+      <div className="col-span-3 lg:col-span-2 space-y-4">
+			  <ProjectSection className={`${className} col-span-3 lg:col-span-2`} />
+      </div>
+      <div className="col-span-3 lg:col-span-1 space-y-4">
+        <NotificationSection className={`${className} col-span-3 lg:col-span-1`} />
+        <DetailsAtGlanceSection className={`${className} col-span-3 lg:col-span-1`} userData={userData} />
+        <ActionsSection className={`${className} col-span-3 lg:col-span-1`} />        
+      </div>
 		</div>
 	</main>
   );
 };
 
 const NotificationSection: React.FC<{ className: string }> = ({ className }) => {
+
+  const [isNotifyOpen, setNotifyOpen] = useState(false); // State to track modal reveal
   const switchTabs = (tabSeq: string) => {
     const systemTab = document.getElementById('systemTab');
     const userTab = document.getElementById('userTab');
@@ -122,9 +128,14 @@ const NotificationSection: React.FC<{ className: string }> = ({ className }) => 
     }
   };
 
+  useEffect(() => {
+    // switchTabs('user_to_system');
+    setNotifyOpen(false);
+  }, []);
+
   return (
-    <section className={`${className} bg-white rounded-xl shadow p-6 col-span-3 lg:col-span-2 border border-gray-500`}>
-      <div className="flex items-center gap-4 mb-5">
+    <section className={`${className} bg-white rounded-xl shadow p-6 border border-gray-500`}>
+      <div className="flex items-center gap-4 mb-5" onClick={() => setNotifyOpen(!isNotifyOpen)}>
         <div className="flex items-center gap-2">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
             <path strokeLinecap="round" strokeLinejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" />
@@ -133,25 +144,33 @@ const NotificationSection: React.FC<{ className: string }> = ({ className }) => 
         </div>
       </div>
 
-      <div className="flex border-b mb-4">
-        <button id="systemTab" onClick={() => switchTabs('user_to_system')} className="px-4 py-2 text-sm bg-grey-800 font-semibold text-white-600 hover:text-blue-600 border-b-2 border-blue-600 focus:outline-none">
-          System Messages
-        </button>
-        <button id="userTab" onClick={() => switchTabs('system_to_user')} className="px-4 py-2 text-sm text-white-600 hover:text-blue-600 focus:outline-none">
-          User Messages
-        </button>
-      </div>
+      <div className={ `transition-all ease-in-out duration-300 overflow-hidden ${isNotifyOpen ? 'max-h-96' : `max-h-0`}` }>
+        <div className="flex border-b mb-4">
+          <button id="systemTab" onClick={() => switchTabs('user_to_system')} className="px-4 py-2 text-sm bg-grey-800 font-semibold text-white-600 hover:text-blue-600 border-b-2 border-blue-600 focus:outline-none">
+            System Messages
+          </button>
+          <button id="userTab" onClick={() => switchTabs('system_to_user')} className="px-4 py-2 text-sm text-white-600 hover:text-blue-600 focus:outline-none">
+            User Messages
+          </button>
+        </div>
 
-      <div id="systemMessages" className="space-y-2 text-sm">
-        <ul className="list-disc list-inside">
-          <MessageList type="system" />          
-        </ul>
-      </div>
+        <div id="systemMessages" className="space-y-2 text-sm">
+          <ul className="list-disc list-inside">
+            <MessageList type="system" />          
+          </ul>
+        </div>
 
-      <div id="userMessages" className="space-y-2 text-sm hidden">
-        <ul className="list-disc list-inside">
-          <li>Refreshing...</li>
-        </ul>
+        <div id="userMessages" className="space-y-2 text-sm hidden">
+          <ul className="list-disc list-inside">
+            <li>Refreshing...</li>
+          </ul>
+        </div>
+      </div>
+      <div onClick={() => setNotifyOpen(!isNotifyOpen)} className="flex cursor-pointer justify-center items-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor"
+             className={`transition-all ease-in-out duration-300 w-6 h-6 ${!isNotifyOpen ? 'rotate-180' : ''}`}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />
+        </svg>
       </div>
     </section>
   );
@@ -297,8 +316,8 @@ const ActionsSection: React.FC<{ className: string }> = ({ className }) => {
             
       <h2 className="text-lg font-semibold mb-4">Actions</h2>
       <div className="flex flex-col space-y-3">
-        <button className="bg-blue-500 text-white p-3 rounded-xl" onClick={() => setModalOpen(true)}>Upload Project</button>
-        <button className="bg-green-500 text-white p-3 rounded-xl">View Assignments</button>
+        <button className="bg-blue-500 text-white p-2 rounded-xl" onClick={() => setModalOpen(true)}>Upload Project</button>
+        <button className="bg-green-500 text-white p-2 rounded-xl">View Assignments</button>
       </div>
     </section>
   );

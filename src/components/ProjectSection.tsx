@@ -38,6 +38,7 @@ const ProjectSection:React.FC<ProjectSectionProps> = ({className=""}) => {
 	const [dataStr, setDataStr] = React.useState<LobbyProject|any>();
 	const [noOfCols, setNoOfCols] = React.useState<number>(1);
 	const [limit, setLimit] = React.useState<number>(10);
+	const [searchStr, setSearchStr] = React.useState<string>("");
 
 
 	const userData = JSON.parse(localStorage.getItem("user") || "{}");
@@ -47,12 +48,13 @@ const ProjectSection:React.FC<ProjectSectionProps> = ({className=""}) => {
 		window.location.href = "/login";
 		return;
 		}		
+		
 
 		const userData = JSON.parse(localStorage.getItem("user") || "{}");
 		if (userData?.id) {
-			const res = await fetch(`${API_BASE}/projects`, 
+			const res = await fetch(`${API_BASE}/projects?q=${searchStr}`, 
 				{
-					method: "GET"
+					method: "GET",										
 				}
 			);
 			const data = await res.json();			
@@ -125,7 +127,7 @@ const ProjectSection:React.FC<ProjectSectionProps> = ({className=""}) => {
 	
 
   return (
-	<section className={`${className} project-section bg-white rounded-xl shadow p-6 col-span-3 lg:col-span-2 border border-gray-500`}>
+	<section className={`${className} project-section bg-white rounded-xl shadow p-6 border border-gray-500`}>
 		<div className="flex flex-row justify-between">
 			<div className='flex flex-row gap-4 mb-4 align-center'>
 				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
@@ -139,31 +141,44 @@ const ProjectSection:React.FC<ProjectSectionProps> = ({className=""}) => {
 				<span className="text-lg font-semibold mb-4 bg-gray-500 text-white px-2 rounded">{totalProjects}</span>
 			</div>
 		</div>
-		<div className='flex space-x-4 border border-gray-500 p-4 text-sm justify-center items-center'>
-			{/* <div className="flex flex-col items-center space-x-2">
-				<p className=''>Total Projects</p>
-				<p className="mb-4 darkm">{totalProjects}</p>
-			</div> */}
-			<div className="flex flex-col items-center space-x-2">
-				<p className='hidden md:block'>View Columns</p>
-				<select title="select no of columns" className="mb-4 darkm hidden md:block" onChange={(e) => { setNoOfCols(parseInt(e.target.value)); }}>
-					<option value="1">1 Column</option>
-					<option value="2">2 Columns</option>
-					<option value="3">3 Columns</option>
-				</select>
+		<div className='flex flex-col space-x-4 border border-gray-500 p-4 text-sm justify-center items-center'>			
+			<div className="flex flex-col items-center w-full">
+				<form onSubmit={(e) => { e.preventDefault(); fetchProjectsLobby(); }} className="flex items-center w-full space-x-2">
+					<input
+						type="text"
+						placeholder="Search"
+						className="flex-grow mb-4 darkm border border-gray-500 p-2 rounded"
+						value={searchStr}
+						onChange={(e) => { setSearchStr(e.target.value); }}
+					/>
+					<button type='submit' className="mb-4 darkm border border-gray-500 p-2 rounded">
+						Search
+					</button>
+				</form>
+				
 			</div>
-			<div className="flex flex-col items-center space-x-2">
-				<p className='hidden md:block'>Records per page</p>
-				<select title="select records per page" className="mb-4 darkm" onChange={(e) => { setLimit(parseInt(e.target.value)); }}>
-					<option value="10">10 Records</option>
-					<option value="20">20 Records</option>
-					<option value="30">30 Records</option>
-				</select>
+			<div className="flex items-center space-x-2">
+				<div className="flex flex-col items-center space-x-2">
+					<p className='hidden md:block'>View Columns</p>
+					<select title="select no of columns" className="mb-4 darkm hidden md:block" onChange={(e) => { setNoOfCols(parseInt(e.target.value)); }}>
+						<option value="1">1 Column</option>
+						<option value="2">2 Columns</option>
+						<option value="3">3 Columns</option>
+					</select>
+				</div>
+				<div className="flex flex-col items-center space-x-2">
+					<p className='hidden md:block'>Records per page</p>
+					<select title="select records per page" className="mb-4 darkm" onChange={(e) => { setLimit(parseInt(e.target.value)); }}>
+						<option value="10">10 Records</option>
+						<option value="20">20 Records</option>
+						<option value="30">30 Records</option>
+					</select>
+				</div>
+				<button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-200" onClick={() => setModalOpen(true)}>
+					Create New Project
+				</button>
 			</div>
 			
-			<button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-200" onClick={() => setModalOpen(true)}>
-				Create New Project
-			</button>			
 		</div>
 		<Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)} title="Add Project">
             <form className="space-y-4" onSubmit={(e) => { e.preventDefault(); addProject(); }}>
@@ -209,6 +224,9 @@ const ProjectSection:React.FC<ProjectSectionProps> = ({className=""}) => {
 				</div>
 			</div>			
 		</Modal>
+		<div className={`text-center mt-4 ${LobbyProjects.length > 0 ? `hidden` : ``}`}>
+			Loading...
+		</div>
 		<Paginator currentPage={currentPage} totalPages={totalPages} handlePrev={handlePrev} handleNext={handleNext} />
 		<>
 			<div className={`grid grid-cols-1 md:grid-cols-${noOfCols} lg:grid-cols-${noOfCols} gap-4`}>

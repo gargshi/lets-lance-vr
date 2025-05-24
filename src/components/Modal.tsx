@@ -13,7 +13,7 @@ type ModalProps = {
 const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children, dataStr }) => {
   
   if (!dataStr) {    
-    console.log("--");
+    // console.log("--");
   }
 
   useEffect(() => {
