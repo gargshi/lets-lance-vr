@@ -142,7 +142,7 @@ const ProjectSection:React.FC<ProjectSectionProps> = ({className=""}) => {
 			</div>
 		</div>
 		<div className='flex flex-col space-x-4 border border-gray-500 p-4 text-sm justify-center items-center'>			
-			<div className="flex flex-col items-center w-full">
+			<div className="flex flex-col md:flex-row w-full">
 				<form onSubmit={(e) => { e.preventDefault(); fetchProjectsLobby(); }} className="flex items-center w-full space-x-2">
 					<input
 						type="text"
@@ -155,28 +155,24 @@ const ProjectSection:React.FC<ProjectSectionProps> = ({className=""}) => {
 						Search
 					</button>
 				</form>
-				
-			</div>
-			<div className="flex items-center space-x-2">
-				<div className="flex flex-col items-center space-x-2">
-					<p className='hidden md:block'>View Columns</p>
-					<select title="select no of columns" className="mb-4 darkm hidden md:block" onChange={(e) => { setNoOfCols(parseInt(e.target.value)); }}>
-						<option value="1">1 Column</option>
-						<option value="2">2 Columns</option>
-						<option value="3">3 Columns</option>
-					</select>
-				</div>
-				<div className="flex flex-col items-center space-x-2">
-					<p className='hidden md:block'>Records per page</p>
-					<select title="select records per page" className="mb-4 darkm" onChange={(e) => { setLimit(parseInt(e.target.value)); }}>
-						<option value="10">10 Records</option>
-						<option value="20">20 Records</option>
-						<option value="30">30 Records</option>
-					</select>
-				</div>
-				<button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-200" onClick={() => setModalOpen(true)}>
-					Create New Project
-				</button>
+				<div className="flex items-center space-x-2">
+					<div className="flex flex-col items-center space-x-2">
+						<p className='hidden md:block'>Layout</p>
+						<select title="select no of columns" className="mb-4 darkm hidden md:block" onChange={(e) => { setNoOfCols(parseInt(e.target.value)); }}>
+							<option value="1">1 Column</option>
+							<option value="2">2 Columns</option>
+							<option value="3">3 Columns</option>
+						</select>
+					</div>
+					<div className="flex flex-col items-center space-x-2">
+						<p className='hidden md:block'>Per page</p>
+						<select title="select records per page" className="mb-4 darkm" onChange={(e) => { setLimit(parseInt(e.target.value)); }}>
+							<option value="10">10 Records</option>
+							<option value="20">20 Records</option>
+							<option value="30">30 Records</option>
+						</select>
+					</div>					
+				</div>				
 			</div>
 			
 		</div>
