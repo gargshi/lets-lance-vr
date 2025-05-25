@@ -66,6 +66,22 @@ const MessageList: React.FC<MessageListProps> = ({type = 'system'}) => {
 	  .catch((err) => console.error('Error deleting message:', err));
   };
 
+  function timeAgo(dateString: string): string {
+		const now = new Date();
+		const past = new Date(dateString);
+		const diffMs = now.getTime() - past.getTime();
+
+		const seconds = Math.floor(diffMs / 1000);
+		const minutes = Math.floor(diffMs / (1000 * 60));
+		const hours = Math.floor(diffMs / (1000 * 60 * 60));
+		const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+		if (seconds < 60) return `${seconds} seconds ago`;
+		if (minutes < 60) return `${minutes} minutes ago`;
+		if (hours < 24) return `${hours} hours ago`;
+		return `${days} days ago`;
+	}
+
   return (
 	<>		
 		<div className={`flex items-center justify-center p-4 ${ allMessages.length === 0 ? '' : 'hidden' }`}>
@@ -105,7 +121,7 @@ const MessageList: React.FC<MessageListProps> = ({type = 'system'}) => {
 									</div>
 								</div>
 								<div className="flex items-center gap-2">
-									<p className="text-xs ">{new Date(msg.received_at).toLocaleString()}</p>
+									<p className="text-xs ">{timeAgo(msg.received_at) || new Date(msg.received_at).toLocaleString()}</p>
 									<button
 											className={`text-red-500 hover:text-red-700 text-xs font-semibold px-1 py-1 rounded border border-red-500 hover:border-red-200 transition hidden sm:block`}
 											onClick={() => handleDelete(msg.id, 'system')}

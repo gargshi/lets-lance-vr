@@ -5,6 +5,7 @@ import ProjectSection from "../components/ProjectSection";
 import Modal from "../components/Modal";
 import MessageList from "../components/MessagesPaginated";
 import { isTokenExpired } from "../utils_tsx/token_expiry_check";
+import "./Dashboard.css";
 
 interface DashboardProps {
   className?: string;
@@ -133,8 +134,10 @@ const NotificationSection: React.FC<{ className: string }> = ({ className }) => 
     setNotifyOpen(false);
   }, []);
 
+  
+
   return (
-    <section className={`${className} bg-white rounded-xl shadow p-6 border border-gray-500`}>
+    <section className={`${className} bg-white rounded-xl shadow p-6 border border-gray-500`}>      
       <div className="flex items-center gap-4 mb-5" onClick={() => setNotifyOpen(!isNotifyOpen)}>
         <div className="flex items-center gap-2">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
@@ -144,7 +147,7 @@ const NotificationSection: React.FC<{ className: string }> = ({ className }) => 
         </div>
       </div>
 
-      <div className={ `transition-all ease-in-out duration-300 overflow-y-scroll ${isNotifyOpen ? 'max-h-96' : `max-h-0`}` }>
+      <div className={ `transition-all ease-in-out duration-300 overflow-y-scroll elegant-scrollbar ${isNotifyOpen ? 'max-h-96' : `max-h-0`}` }>
         <div className="flex border-b mb-4">
           <button id="systemTab" onClick={() => switchTabs('user_to_system')} className="px-4 py-2 text-sm bg-grey-800 font-semibold text-white-600 hover:text-blue-600 border-b-2 border-blue-600 focus:outline-none">
             System Messages
