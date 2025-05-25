@@ -144,7 +144,7 @@ const NotificationSection: React.FC<{ className: string }> = ({ className }) => 
         </div>
       </div>
 
-      <div className={ `transition-all ease-in-out duration-300 overflow-hidden ${isNotifyOpen ? 'max-h-96' : `max-h-0`}` }>
+      <div className={ `transition-all ease-in-out duration-300 overflow-y-scroll ${isNotifyOpen ? 'max-h-96' : `max-h-0`}` }>
         <div className="flex border-b mb-4">
           <button id="systemTab" onClick={() => switchTabs('user_to_system')} className="px-4 py-2 text-sm bg-grey-800 font-semibold text-white-600 hover:text-blue-600 border-b-2 border-blue-600 focus:outline-none">
             System Messages
