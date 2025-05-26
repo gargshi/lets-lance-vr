@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import API_BASE from "../components/config";
 import { dark_mode_init } from '../utils_tsx/darkmode';
 import ProjectSection from "../components/ProjectSection";
+import BidSection from "../components/BidSection";
 import Modal from "../components/Modal";
 import MessageList from "../components/MessagesPaginated";
 import { isTokenExpired } from "../utils_tsx/token_expiry_check";
@@ -99,6 +100,7 @@ const Dashboard: React.FC<DashboardProps> = ({ className = '' }) => {
       </div>
       <div className="col-span-3 lg:col-span-1 space-y-4">
         <NotificationSection className={`${className} col-span-3 lg:col-span-1`} />
+        <BidSection className={`${className} col-span-3 lg:col-span-1`} />
         <DetailsAtGlanceSection className={`${className} col-span-3 lg:col-span-1`} userData={userData} />
         <ActionsSection className={`${className} col-span-3 lg:col-span-1`} />        
       </div>
