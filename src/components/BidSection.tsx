@@ -58,7 +58,7 @@ const BidSection: React.FC<BidSectionProps> = ({ className }) => {
 					<h2 className="text-lg font-semibold">Bids Section</h2>
 				</div>
 			</div>
-			<div className={ `transition-all ease-in-out duration-300 overflow-y-scroll elegant-scrollbar ${isBidSectionOpen ? 'max-h-96' : `max-h-0`}` }>
+			{/* <div className={ `transition-all ease-in-out duration-300 overflow-y-scroll elegant-scrollbar ${isBidSectionOpen ? 'max-h-96' : `max-h-0`}` }>
 				<ul className="list-disc list-inside">
 					{bids.map((bid) => (
 						<li key={bid.id} className="">
@@ -77,7 +77,55 @@ const BidSection: React.FC<BidSectionProps> = ({ className }) => {
 						</li>
 					))}
 				</ul>
+			</div> */}
+			<div
+				className={`transition-all ease-in-out duration-300 overflow-y-auto elegant-scrollbar px-4 ${
+					isBidSectionOpen ? 'max-h-96' : 'max-h-0'
+				}`}
+				>
+				<div className="space-y-4">
+					{bids.map((bid) => (
+					<div
+						key={bid.id}
+						className=" shadow-md rounded-2xl p-4 border border-gray-500"
+					>
+						<div className="text-sm darkm">
+							<p>
+								<span className="font-semibold darkm">Bid ID:</span> {bid.id}
+							</p>
+							<p>
+								<span className="font-semibold darkm">Amount:</span> ${bid.amount}
+							</p>
+							<p>
+								<span className="font-semibold  darkm">Created At:</span>{' '}
+								{new Date(bid.created_at).toLocaleString()}
+							</p>
+							<p>
+								<span className="font-semibold  darkm">Created By:</span> {bid.created_by}
+							</p>
+							<p>
+								<span className="font-semibold darkm">Project ID:</span>{' '}
+								{bid.project?.project_id || 'N/A'}
+							</p>
+
+						{bid.project && (
+							<div className="mt-2 border-t pt-2">
+							<p>
+								<span className="font-semibold  darkm">Project Name:</span>{' '}
+								{bid.project.title}
+							</p>
+							<p>
+								<span className="font-semibold  darkm">Project Description:</span>{' '}
+								{bid.project.description}
+							</p>
+							</div>
+						)}
+						</div>
+					</div>
+					))}
+				</div>
 			</div>
+
 			<div onClick={() => setIsBidSectionOpen(!isBidSectionOpen)} className="flex cursor-pointer justify-center items-center gap-2">
 				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor"
 					className={`transition-all ease-in-out duration-300 w-6 h-6 ${!isBidSectionOpen ? 'rotate-180' : ''}`}>
